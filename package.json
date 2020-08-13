@@ -1,0 +1,16 @@
+{
+  "name": "ramda_learn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha **/*.test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "accounting": "^0.4.1",
+    "chai": "^4.2.0",
+    "ramda": "^0.27.1"
+  }
+}
