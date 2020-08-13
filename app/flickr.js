@@ -22,8 +22,8 @@ require([
   const renderImg = (url) => $('<img />', { src: url })
 
   const mediaUrl = _.compose(_.prop('m'), _.prop('media'))
-  const srcs = _.compose(_.map(mediaUrl), _.prop('items'))
-  const images = _.compose(_.map(renderImg), srcs)
+  const mediaToImg = _.compose(renderImg, mediaUrl)
+  const images = _.compose(_.map(mediaToImg), _.prop('items'))
   const renderImages = _.compose(Impure.setHtml('body'), images)
 
   const url = term => 'https://api.flickr.com/services/feeds/photos_public.gne?tags=' + term + '&format=json&jsoncallback=?'
