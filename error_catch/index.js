@@ -62,3 +62,8 @@ const zoltar = compose(console.log, either(Left.of, Right.of), getAge(moment()))
 
 zoltar({ birthdate: '1993-05-01' })
 zoltar({ birthdate: 'boom!' })
+
+module.exports = {
+  Left,
+  Right
+}

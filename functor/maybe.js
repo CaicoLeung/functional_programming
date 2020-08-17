@@ -27,3 +27,7 @@ console.log(c);
 
 const d = Maybe.of({ name: 'Caico', age: 25 }).map(prop('age')).map(add(10))
 console.log(d);
+
+module.exports = {
+  Maybe
+}
