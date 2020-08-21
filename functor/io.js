@@ -1,11 +1,42 @@
-const {compose, reject, split, head} = require('ramda')
-const fs = require('fs')
+const _ = require('ramda')
 
-const readFile = (filename) => {
-  return new Task((reject, result) => {
-    fs.readFile(filename, 'utf-8', (err, data) => err ? reject(err) : result(data))
-  })
+const inspect = function(x) {
+  return (x && x.inspect) ? x.inspect() : x;
+};
+
+// IO
+const IO = function(f) {
+  this.unsafePerformIO = f;
 }
 
-const result = readFile('index.js').map(split('\n')).map(head)
-console.log(result);
+IO.of = function(x) {
+  return new IO(function() {
+    return x;
+  });
+}
+
+IO.prototype.map = function(f) {
+  return new IO(_.compose(f, this.unsafePerformIO));
+}
+
+IO.prototype.join = function() {
+  return this.unsafePerformIO();
+}
+
+IO.prototype.chain = function(f) {
+  return this.map(f).join();
+}
+
+IO.prototype.ap = function(a) {
+  return this.chain(function(f) {
+    return a.map(f);
+  });
+}
+
+IO.prototype.inspect = function() {
+  return 'IO('+inspect(this.unsafePerformIO)+')';
+}
+
+module.exports = {
+  IO
+}
