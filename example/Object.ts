@@ -15,7 +15,7 @@ import {
   trim, values, valuesIn, view, where, whereEq
 } from 'ramda'
 
-const print = partial(console.log, [])
+import { print } from './Unit'
 
 const target = {
   a: 1,
