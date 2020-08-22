@@ -3,16 +3,28 @@ import {
   addIndex,
   always,
   andThen,
-  ap, apply, applySpec, applyTo, ascend, bind, clone, comparator, compose, composeK, concat, curry, dec,
-  defaultTo, descend, divide, gt,
-  has,
-  hasPath, identity,
+  ap,
+  apply,
+  applySpec,
+  applyTo,
+  ascend,
+  bind,
+  comparator,
+  composeP,
+  descend,
+  divide,
+  hasPath,
+  identity,
   ifElse,
   inc,
-  isEmpty, lt,
   map,
   multiply,
-  otherwise, partial, pick, pipe, prop, sort, split, toUpper
+  otherwise,
+  partial,
+  pipe,
+  prop,
+  sort,
+  split
 } from 'ramda'
 import {print, printError} from './Unit'
 
@@ -74,3 +86,17 @@ function logX(arg) {
 
 bind(logX, people)('i am arg')
 
+const db = {
+  users: {
+    JOE: {
+      name: 'Joe',
+      followers: ['STEVE', 'SUZY']
+    }
+  }
+}
+
+const lookupUser = (userId) => Promise.resolve(db.users[userId])
+const lookupFollowers = (user) => Promise.resolve(user.followers)
+
+const followersForUser = composeP(lookupFollowers, lookupUser)
+followersForUser('JOE').then(print)
