@@ -1,5 +1,18 @@
 import {
-  addIndex, always, andThen, defaultTo, has, hasPath, ifElse, isEmpty, map, otherwise, partial, pick, pipe, prop, split
+  add,
+  addIndex,
+  always,
+  andThen,
+  ap, apply, applySpec, applyTo, ascend, bind, clone, comparator, compose, composeK, concat, curry, dec,
+  defaultTo, descend, divide, gt,
+  has,
+  hasPath, identity,
+  ifElse,
+  inc,
+  isEmpty, lt,
+  map,
+  multiply,
+  otherwise, partial, pick, pipe, prop, sort, split, toUpper
 } from 'ramda'
 import {print, printError} from './Unit'
 
@@ -25,3 +38,39 @@ const getMemberHandle = pipe(makeQuery, fetchMember, andThen(print), otherwise(p
 const getMemberFailHandle = pipe(failQuery, fetchMember,  andThen(print), otherwise(printError))
 getMemberHandle('1234567@qq.com')
 getMemberFailHandle('1234567@qq.com')
+
+print(ap([add(10), multiply(2)], [1, 2, 3]))
+print(ap(add, inc)(10)) // 10 + (10 + 1) = 21
+print(ap(multiply, divide(100))(10)) // 10 * (100 / 10) = 100
+
+print('\n')
+
+print(apply(Math.max, [1, 2, 3, 12, 10]))
+
+const getMetrics = applySpec({
+  num: add(10),
+  nested: {
+    mul: multiply(2)
+  }
+})
+
+print(getMetrics(2))
+
+print(applyTo(51)(inc))
+
+const people = [
+  { name: 'Emma', age: 70 },
+  { name: 'Peter', age: 78 },
+  { name: 'Mikhail', age: 62 },
+]
+print(sort(ascend(prop('age')), people))
+print(sort(ascend(identity), [3, 1, 5, 4]))
+print(sort(descend(identity), [3, 1, 5, 4]))
+print(sort(comparator((a, b) => a.age < b.age), people))
+
+function logX(arg) {
+  console.log(this[0].name, arg)
+}
+
+bind(logX, people)('i am arg')
+

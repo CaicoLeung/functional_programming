@@ -16,6 +16,19 @@ Maybe.prototype.map = function (f) {
   return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value))
 }
 
+Maybe.prototype.join = function() {
+  return this.isNothing() ? Maybe.of(null) : this.__value;
+}
+
+Maybe.prototype.chain = function(f) {
+  return this.map(f).join();
+}
+
+Maybe.prototype.ap = function(other) {
+  return this.isNothing() ? Maybe.of(null) : other.map(this.__value);
+}
+
+
 const a = Maybe.of('Malkovich Malkovich').map(match(/a/ig))
 console.log(a);
 
