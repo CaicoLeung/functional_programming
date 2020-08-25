@@ -10,19 +10,19 @@ import {
   ascend,
   bind,
   comparator,
-  composeP,
+  composeP, composeWith, construct,
   descend,
   divide,
   hasPath,
   identity,
   ifElse,
-  inc,
+  inc, invoker, isNil,
   map,
   multiply,
   otherwise,
   partial,
   pipe,
-  prop,
+  prop, slice,
   sort,
   split
 } from 'ramda'
@@ -100,3 +100,24 @@ const lookupFollowers = (user) => Promise.resolve(user.followers)
 
 const followersForUser = composeP(lookupFollowers, lookupUser)
 followersForUser('JOE').then(print)
+
+const composeWhileNotNil: any = (f, res) => isNil(res) ? print(res) : print(f(res))
+composeWith(composeWhileNotNil, [inc, prop('age')])({ age: 11 })
+
+function Animal(kind) {
+  this.kind = kind;
+}
+Animal.prototype.sighting = function() {
+  return "It's a " + this.kind + "!";
+}
+
+const Pig = construct(Animal)('pig')
+
+print(Pig['sighting']())
+
+// invoker
+const str_source = 'abcdefghij'
+const sliceFrom = invoker(1, 'slice')
+print(sliceFrom(6, str_source), str_source.slice(6))
+const sliceFrom6 = invoker(2, 'slice')(6)
+print(sliceFrom6(8, str_source), str_source.slice(6, 8))
