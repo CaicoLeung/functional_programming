@@ -5,17 +5,27 @@ import {
   construct,
   constructN,
   converge,
+  dec,
   descend,
   divide,
   identity,
+  inc,
   invoker,
+  isNil,
   join, juxt,
   length,
-  map, max, min,
+  map, max, memoizeWith, merge, mergeAll, mergeDeepWith, min,
+  nAry,
+  negate,
+  o, of, once,
+  pipeWith,
+  product,
   prop,
+  range,
   sort,
   sum,
   toLower,
+  toString,
   toUpper
 } from 'ramda'
 import { print } from './Unit'
@@ -65,3 +75,39 @@ const people = [
 print(sort(descend(prop('age')), people))
 print(sort(descend(identity), [5, 3, 1, 6, 4]))
 print(sort(ascend(identity), [5, 3, 1, 6, 4]))
+
+let count = 0
+const factorial = memoizeWith(s => toString(s), n => {
+  count += 1
+  return product(range(1, n + 1))
+})
+
+print(factorial(5))
+print(factorial(6))
+print(factorial(6))
+print(factorial(5))
+
+print('count: ', count)
+
+print(merge({name: 'caico', age: 15}, {age: 20}))
+print(mergeAll([{a: 1}, {b: 2}, {c: 3}]))
+print(mergeDeepWith(concat, {a: 'hi', b: 'hello', c: [1, 2, 3]}, { b: 'world', c: [15, 6, 7], d: 1 }))
+
+const takesTwoArgs = (a, b) => [a, b]
+print(takesTwoArgs.length)
+print(takesTwoArgs(1, 2))
+
+const takeOneArg = nAry(1, takesTwoArgs)
+print(takeOneArg.length)
+print(takeOneArg(1, 2))
+
+
+const classyGreeting = name => "The name's " + name.last + ", " + name.first + " " + name.last
+const yellGreeting = o(toUpper, classyGreeting)
+print(yellGreeting({ first: 'caico', last: 'leung' }))
+
+print(of(1), Array.of(1, 2, 3))
+
+const addTenOnce = once(n => n + 10)
+print(addTenOnce(1))
+print(addTenOnce(100))

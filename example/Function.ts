@@ -125,7 +125,6 @@ const sliceFrom6 = invoker(2, 'slice')(6)
 print(sliceFrom6(8, str_source), str_source.slice(6, 8))
 
 pipe(partial(axios.get, ['https://jsonplaceholder.typicode.com/todos/122323']), andThen(prop('data')), andThen(partial(print, ['请求data: '])), otherwise(pipe(path(['response', 'statusText']), printError)))({})
-// axios.get('https://jsonplaceholder.typicode.com/todos/1').then(res => print(prop('data', res)))
 
 const composeWithHandle: any = (f, source) => isNil(source) ? source : f(source)
 composeWith(composeWithHandle, [print, add(100), inc, prop('count')])({count: 10})
